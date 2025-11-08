@@ -1,7 +1,7 @@
 # Day 22 - Real-Time Analytics Pipeline
 
 ## Challenge Description
-Real-Time Analytics Pipeline - Design a system to collect, queue, and display live metrics (like Twitch or YouTube Analytics). Goal: Integrate queues + scaling.
+Design a system to collect, queue, and display live metrics (like Twitch or YouTube Analytics). Goal: Integrate queues + scaling.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

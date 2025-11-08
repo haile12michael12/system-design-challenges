@@ -1,7 +1,7 @@
 # Day 47 - Transactional Email Delivery Service
 
 ## Challenge Description
-Transactional Email Delivery Service - Retries, deliverability, and metrics. Goal: Build reliable email systems.
+Retries, deliverability, and metrics. Goal: Build reliable email systems.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

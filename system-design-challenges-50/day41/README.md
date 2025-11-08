@@ -1,7 +1,7 @@
 # Day 41 - Edge-Cached CDN Prototype
 
 ## Challenge Description
-Edge-Cached CDN Prototype - Origin fallback and cache invalidation. Goal: Build content delivery networks.
+Origin fallback and cache invalidation. Goal: Build content delivery networks.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

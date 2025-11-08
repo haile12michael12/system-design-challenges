@@ -1,7 +1,7 @@
 # Day 31 - High-Throughput Logging Pipeline
 
 ## Challenge Description
-High-Throughput Logging Pipeline - Ingest, store, and query logs at scale. Goal: Build efficient logging infrastructure.
+Ingest, store, and query logs at scale. Goal: Build efficient logging infrastructure.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

@@ -1,7 +1,7 @@
 # Day 45 - Massively Concurrent Websocket Hub
 
 ## Challenge Description
-Massively Concurrent Websocket Hub - Scale connections efficiently. Goal: Handle millions of concurrent users.
+Scale connections efficiently. Goal: Handle millions of concurrent users.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

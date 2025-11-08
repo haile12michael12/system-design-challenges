@@ -1,7 +1,7 @@
 # Day 37 - Search-as-a-Service Prototype
 
 ## Challenge Description
-Search-as-a-Service Prototype - Index, shard, and query at scale. Goal: Create a search platform.
+Index, shard, and query at scale. Goal: Create a search platform.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

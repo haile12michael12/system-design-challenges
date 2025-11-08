@@ -1,7 +1,7 @@
 # Day 11 - Auto-Scaler Visualizer
 
 ## Challenge Description
-Auto-Scaler Visualizer - Simulate vertical vs horizontal scaling with cost and latency graphs. Goal: Learn when to scale up/out.
+Simulate vertical vs horizontal scaling with cost and latency graphs. Goal: Learn when to scale up/out.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

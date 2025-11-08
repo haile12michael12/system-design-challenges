@@ -1,7 +1,7 @@
-# Day 21 - Design Instagram Simulator
+# Day 21 - "Design Instagram" Simulator
 
 ## Challenge Description
-Design Instagram Simulator - Full design walk-through: feed, caching, scaling, failure planning. Goal: Practice the 9-step design process.
+Full design walk-through: feed, caching, scaling, failure planning. Goal: Practice the 9-step design process.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

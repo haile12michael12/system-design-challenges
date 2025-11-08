@@ -1,7 +1,7 @@
 # Day 38 - Global Rate Limiter
 
 ## Challenge Description
-Global Rate Limiter - Distributed token bucket implementation. Goal: Protect services from overload.
+Distributed token bucket implementation. Goal: Protect services from overload.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

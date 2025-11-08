@@ -1,7 +1,7 @@
 # Day 9 - Multi-Level Cache System
 
 ## Challenge Description
-Multi-Level Cache System - Implement API-level and DB-level caches (Redis + TTL + write-through). Goal: Master cache invalidation policies.
+Implement API-level and DB-level caches (Redis + TTL + write-through). Goal: Master cache invalidation policies.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

@@ -1,7 +1,7 @@
-# Day 2 - Weather Dashboard (Non-Functional Requirements Focus)
+# Day 2 - Global Weather Dashboard (Non-Functional Requirements Focus)
 
 ## Challenge Description
-Weather Dashboard (Non-Functional Requirements Focus) - Build a weather app that must handle 1M users and 99.99% uptime. Goal: Document latency, availability, and scalability metrics.
+Build a weather app that must handle 1M users and 99.99% uptime. Goal: Document latency, availability, and scalability metrics.
 
 ## Project Structure
 ```

@@ -1,7 +1,7 @@
 # Day 34 - Video Transcoding Service
 
 ## Challenge Description
-Video Transcoding Service - Queueing, worker autoscaling, storage strategies. Goal: Handle media processing at scale.
+Queueing, worker autoscaling, storage strategies. Goal: Handle media processing at scale.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

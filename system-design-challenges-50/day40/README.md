@@ -1,7 +1,7 @@
 # Day 40 - Federated Authentication Broker
 
 ## Challenge Description
-Federated Authentication Broker - Social auth + SSO across regions. Goal: Implement secure authentication.
+Social auth + SSO across regions. Goal: Implement secure authentication.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

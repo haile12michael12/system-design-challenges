@@ -1,7 +1,7 @@
 # Day 7 - Stateful Multiplayer Game Lobby System
 
 ## Challenge Description
-Stateful Multiplayer Game Lobby System - Build a game lobby that keeps session data in-memory per server. Goal: Understand stateful vs stateless trade-offs.
+Build a game lobby that keeps session data in-memory per server. Goal: Understand stateful vs stateless trade-offs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

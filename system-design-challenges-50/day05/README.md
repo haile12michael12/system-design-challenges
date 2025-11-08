@@ -1,7 +1,7 @@
 # Day 5 - Scalable Requirements Tracker
 
 ## Challenge Description
-Scalable Requirements Tracker - Full-stack application to track and version evolving system requirements with collaboration features. Goal: Manage changing specifications efficiently with a modern web application.
+Backend microservice to track and version evolving system requirements. Goal: Manage changing specifications efficiently.
 
 ## Project Overview
 This project implements a full-stack requirements tracking system with:

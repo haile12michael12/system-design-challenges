@@ -1,7 +1,7 @@
 # Day 49 - Cost-Aware Autoscaler
 
 ## Challenge Description
-Cost-Aware Autoscaler - Autoscale using cost + performance signals. Goal: Optimize cloud resource usage.
+Autoscale using cost + performance signals. Goal: Optimize cloud resource usage.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

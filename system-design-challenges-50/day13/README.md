@@ -1,7 +1,7 @@
 # Day 13 - High-Durability Payment Gateway
 
 ## Challenge Description
-High-Durability Payment Gateway - Build a small API that processes payments with guaranteed durability and transaction logs. Goal: Explore Latency vs Durability.
+Build a small API that processes payments with guaranteed durability and transaction logs. Goal: Explore Latency vs Durability.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

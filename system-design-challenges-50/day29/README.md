@@ -1,7 +1,7 @@
 # Day 29 - Resilient Multi-Service Deployment Simulator
 
 ## Challenge Description
-Resilient Multi-Service Deployment Simulator - Kubernetes + chaos testing setup that measures recovery time under failures. Goal: Failure handling and SLA tracking.
+Kubernetes + chaos testing setup that measures recovery time under failures. Goal: Failure handling and SLA tracking.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

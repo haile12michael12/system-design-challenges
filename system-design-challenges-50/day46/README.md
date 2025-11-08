@@ -1,7 +1,7 @@
 # Day 46 - Time-Series Metrics Store
 
 ## Challenge Description
-Time-Series Metrics Store - Ingestion, downsampling, retention policies. Goal: Store and query time-series data.
+Ingestion, downsampling, retention policies. Goal: Store and query time-series data.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

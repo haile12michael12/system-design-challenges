@@ -1,7 +1,7 @@
 # Day 17 - Eventually Consistent Social Feed
 
 ## Challenge Description
-Eventually Consistent Social Feed - Feed updates propagate with delay but high availability. Goal: Demonstrate eventual consistency.
+Feed updates propagate with delay but high availability. Goal: Demonstrate eventual consistency.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

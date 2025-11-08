@@ -1,7 +1,7 @@
 # Day 25 - Monitoring & Observability Suite
 
 ## Challenge Description
-Monitoring & Observability Suite - Create logging, metrics, and alerting for any service. Goal: Practice observability trade-offs.
+Create logging, metrics, and alerting for any service. Goal: Practice observability trade-offs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

@@ -1,7 +1,7 @@
 # Day 35 - Recommendation Engine at Scale
 
 ## Challenge Description
-Recommendation Engine at Scale - Offline vs online model serving. Goal: Build scalable recommendation systems.
+Offline vs online model serving. Goal: Build scalable recommendation systems.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

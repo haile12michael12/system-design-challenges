@@ -1,7 +1,7 @@
 # Day 28 - AI-Powered Trade-Off Analyzer
 
 ## Challenge Description
-AI-Powered Trade-Off Analyzer - LLM-based app that suggests trade-offs (CAP, cost, latency) from design input. Goal: Combine AI + architecture reasoning.
+LLM-based app that suggests trade-offs (CAP, cost, latency) from design input. Goal: Combine AI + architecture reasoning.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

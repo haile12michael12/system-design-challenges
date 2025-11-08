@@ -1,7 +1,7 @@
 # Day 12 - CAP Trade-Off Explorer
 
 ## Challenge Description
-CAP Trade-Off Explorer - Interactive web tool where you toggle Consistency/Availability and see real-time effects. Goal: CAP theorem in action.
+Interactive web tool where you toggle Consistency/Availability and see real-time effects. Goal: CAP theorem in action.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

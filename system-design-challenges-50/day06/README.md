@@ -1,7 +1,7 @@
 # Day 6 - Client-Server Chat Application
 
 ## Challenge Description
-Client-Server Chat Application - Design a WebSocket-based chat with stateless backend servers and load balancing. Goal: Demonstrate horizontal scaling.
+Design a WebSocket-based chat with stateless backend servers and load balancing. Goal: Demonstrate horizontal scaling.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

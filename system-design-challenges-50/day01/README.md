@@ -1,7 +1,7 @@
-# Day 1 - Instagram Feed (Functional Requirements Focus)
+# Day 1 - Instagram Feed Service (Functional Requirements Focus)
 
 ## Challenge Description
-Instagram Feed (Functional Requirements Focus) - Design a minimal Instagram feed system (no full app) where users see posts from people they follow. Goal: Extract and prioritize core functional requirements.
+Design a minimal Instagram feed system (no full app) where users see posts from people they follow. Goal: Extract and prioritize core functional requirements.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

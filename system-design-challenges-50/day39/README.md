@@ -1,7 +1,7 @@
 # Day 39 - Privacy-Preserving Analytics
 
 ## Challenge Description
-Privacy-Preserving Analytics - Differential privacy basics. Goal: Collect insights while protecting user privacy.
+Differential privacy basics. Goal: Collect insights while protecting user privacy.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

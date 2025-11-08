@@ -1,7 +1,7 @@
 # Day 8 - Database Migration Simulator
 
 ## Challenge Description
-Database Migration Simulator - Visualize the pain of migrating from SQL to NoSQL (or vice versa). Goal: CAP theorem + schema evolution.
+Visualize the pain of migrating from SQL → NoSQL (or vice versa). Goal: CAP theorem + schema evolution.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

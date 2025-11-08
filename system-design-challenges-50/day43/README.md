@@ -1,7 +1,7 @@
 # Day 43 - Secure Audit Trail System
 
 ## Challenge Description
-Secure Audit Trail System - Tamper-evident logs and retention policies. Goal: Maintain security compliance.
+Tamper-evident logs and retention policies. Goal: Maintain security compliance.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

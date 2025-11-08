@@ -1,7 +1,7 @@
 # Day 32 - Real-Time Collaboration Editor
 
 ## Challenge Description
-Real-Time Collaboration Editor - OT/CRDT basics and sync strategies. Goal: Implement collaborative editing features.
+OT/CRDT basics and sync strategies. Goal: Implement collaborative editing features.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

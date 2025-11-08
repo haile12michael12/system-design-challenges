@@ -1,7 +1,7 @@
 # Day 24 - Multi-Region Failover Simulation
 
 ## Challenge Description
-Multi-Region Failover Simulation - Build a dashboard to test failover scenarios and latency effects. Goal: Handle region outages and replication lag.
+Build a dashboard to test failover scenarios and latency effects. Goal: Handle region outages and replication lag.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

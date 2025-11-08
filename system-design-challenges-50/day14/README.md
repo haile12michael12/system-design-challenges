@@ -1,7 +1,7 @@
 # Day 14 - Microservices vs Monolith Splitter
 
 ## Challenge Description
-Microservices vs Monolith Splitter - Convert a monolithic e-commerce app into microservices. Goal: Analyze engineering cost vs independence.
+Convert a monolithic e-commerce app into microservices. Goal: Analyze engineering cost vs independence.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

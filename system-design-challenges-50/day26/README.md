@@ -1,7 +1,7 @@
 # Day 26 - Hybrid Strong + Eventual Consistency Platform
 
 ## Challenge Description
-Hybrid Strong + Eventual Consistency Platform - Combine both models within one system (e.g., social app with consistent login + eventual feeds). Goal: Partition data based on consistency needs.
+Combine both models within one system (e.g., social app with consistent login + eventual feeds). Goal: Partition data based on consistency needs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

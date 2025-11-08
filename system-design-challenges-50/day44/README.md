@@ -1,7 +1,7 @@
 # Day 44 - Graph-DB Based Social Graph
 
 ## Challenge Description
-Graph-DB Based Social Graph - Friend recommendations and traversal. Goal: Design social network infrastructure.
+Friend recommendations and traversal. Goal: Design social network infrastructure.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

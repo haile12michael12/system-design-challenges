@@ -1,7 +1,7 @@
 # Day 18 - Latency-Aware News App
 
 ## Challenge Description
-Latency-Aware News App - Choose between caching, prefetching, or batching for lowest perceived latency. Goal: Analyze UX vs backend trade-offs.
+Choose between caching, prefetching, or batching for lowest perceived latency. Goal: Analyze UX vs backend trade-offs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

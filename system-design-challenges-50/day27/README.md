@@ -1,7 +1,7 @@
 # Day 27 - Dynamic Cache Invalidation AI Agent
 
 ## Challenge Description
-Dynamic Cache Invalidation AI Agent - AI service that predicts optimal cache TTLs. Goal: Smart cache tuning.
+AI service that predicts optimal cache TTLs. Goal: Smart cache tuning.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

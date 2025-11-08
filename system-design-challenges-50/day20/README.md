@@ -1,7 +1,7 @@
 # Day 20 - Cost-Performance Optimizer
 
 ## Challenge Description
-Cost-Performance Optimizer - Build a dashboard that dynamically recommends cheaper configurations with minimal SLA impact. Goal: Optimize engineering + cloud cost.
+Build a dashboard that dynamically recommends cheaper configurations with minimal SLA impact. Goal: Optimize engineering + cloud cost.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

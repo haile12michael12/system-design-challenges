@@ -1,7 +1,7 @@
 # Day 15 - Read vs Write Optimized Social App
 
 ## Challenge Description
-Read vs Write Optimized Social App - Build a system where writes go to normalized DB, but reads hit denormalized cache. Goal: Implement CQRS pattern.
+Build a system where writes go to normalized DB, but reads hit denormalized cache. Goal: Implement CQRS pattern.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

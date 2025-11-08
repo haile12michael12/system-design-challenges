@@ -1,7 +1,7 @@
 # Day 10 - Distributed Task Queue System
 
 ## Challenge Description
-Distributed Task Queue System - Build a message queue (RabbitMQ/Kafka clone-lite) for async jobs. Goal: Handle load spikes gracefully.
+Build a message queue (RabbitMQ/Kafka clone-lite) for async jobs. Goal: Handle load spikes gracefully.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

@@ -1,7 +1,7 @@
 # Day 3 - Feedback-Driven System Design Portal
 
 ## Challenge Description
-Feedback-Driven System Design Portal - Create a tool where users can submit design questions, and the system dynamically adjusts based on user feedback. Goal: Show evolving requirements and trade-offs.
+Create a tool where users can submit design questions, and the system dynamically adjusts based on user feedback. Goal: Show evolving requirements and trade-offs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

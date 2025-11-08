@@ -1,7 +1,7 @@
 # Day 16 - Strongly Consistent Auth System
 
 ## Challenge Description
-Strongly Consistent Auth System - Auth microservice ensuring immediate consistency after password resets. Goal: Explore strong consistency design.
+Auth microservice ensuring immediate consistency after password resets. Goal: Explore strong consistency design.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

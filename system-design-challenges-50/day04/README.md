@@ -1,7 +1,7 @@
 # Day 4 - Requirements Analyzer CLI
 
 ## Challenge Description
-Requirements Analyzer CLI - Command-line app that classifies inputs into 'functional' and 'non-functional' using NLP. Goal: Practice requirement parsing.
+Command-line app that classifies inputs into "functional" and "non-functional" using NLP. Goal: Practice requirement parsing.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

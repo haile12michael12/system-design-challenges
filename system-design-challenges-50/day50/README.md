@@ -1,7 +1,7 @@
 # Day 50 - Immutable Infrastructure Deployer
 
 ## Challenge Description
-Immutable Infrastructure Deployer - Infra as code with safe rollbacks. Goal: Implement reliable deployments.
+Infra as code with safe rollbacks. Goal: Implement reliable deployments.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

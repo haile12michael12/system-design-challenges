@@ -1,7 +1,7 @@
 # Day 33 - Geo-Distributed Key-Value Store
 
 ## Challenge Description
-Geo-Distributed Key-Value Store - Consistency models and partitioning. Goal: Design globally distributed storage.
+Consistency models and partitioning. Goal: Design globally distributed storage.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

@@ -1,7 +1,7 @@
 # Day 19 - Durability-Optimized File Storage
 
 ## Challenge Description
-Durability-Optimized File Storage - Multi-replica storage system that prioritizes safety over speed. Goal: Practice replication and WAL concepts.
+Multi-replica storage system that prioritizes safety over speed. Goal: Practice replication and WAL concepts.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

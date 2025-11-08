@@ -1,7 +1,7 @@
 # Day 36 - Feature Flagging Service
 
 ## Challenge Description
-Feature Flagging Service - Rollout strategies and targeting. Goal: Implement safe feature deployments.
+Rollout strategies and targeting. Goal: Implement safe feature deployments.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

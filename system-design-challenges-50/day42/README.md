@@ -1,7 +1,7 @@
 # Day 42 - State Machine Workflow Engine
 
 ## Challenge Description
-State Machine Workflow Engine - Durable workflow with retries. Goal: Create reliable business processes.
+Durable workflow with retries. Goal: Create reliable business processes.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge

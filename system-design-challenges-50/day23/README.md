@@ -1,7 +1,7 @@
 # Day 23 - Event-Driven Order Processing System
 
 ## Challenge Description
-Event-Driven Order Processing System - Orders flow asynchronously across microservices via queues. Goal: Handle async processing, retries, and DLQs.
+Orders flow asynchronously across microservices via queues. Goal: Handle async processing, retries, and DLQs.
 
 ## Learning Goals
 - Understand the core design trade-offs for this challenge
