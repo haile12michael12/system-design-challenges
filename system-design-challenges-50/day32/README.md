@@ -1,32 +1,101 @@
-# Day 32 - Real-Time Collaboration Editor
+# Real-Time Collaboration Editor
 
 ## Challenge Description
 OT/CRDT basics and sync strategies. Goal: Implement collaborative editing features.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
+## Project Structure
+```
+app/
+├── __init__.py
+├── main.py # FastAPI app entrypoint
+├── api/ # API layer (REST & WS)
+│ ├── __init__.py
+│ ├── routes/
+│ │ ├── __init__.py
+│ │ ├── health.py # /health endpoint
+│ │ └── documents.py # CRUD endpoints for documents
+│ └── ws/
+│ ├── __init__.py
+│ └── editor_ws.py # WebSocket endpoint for collaboration
+│
+├── core/ # Core utilities & protocols
+│ ├── __init__.py
+│ ├── config.py # Environment variables & settings
+│ ├── ws_manager.py # WebSocket connection manager
+│ ├── ot_engine.py # OT/CRDT logic placeholder
+│ └── logger.py # Logging config
+│
+├── db/ # Persistence layer
+│ ├── __init__.py
+│ ├── models.py # SQLAlchemy models
+│ ├── session.py # Async DB session helper
+│ └── crud.py # CRUD functions for documents
+│
+├── workers/ # Background jobs (Celery/RQ)
+│ ├── __init__.py
+│ └── snapshot_worker.py # Periodic document snapshot task
+│
+├── services/ # Domain services (document sync, merge)
+│ ├── __init__.py
+│ └── sync_service.py # Merge + broadcast orchestration
+│
+└── tests/ # Unit & integration tests
+ ├── __init__.py
+ ├── test_health.py
+ ├── test_ws_basic.py
+ └── test_crud.py
 
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+migrations/ # Alembic migrations
+└── versions/
+
+scripts/ # DevOps / CLI tools
+├── init_db.py
+└── seed_data.py
+
+docker/
+├── Dockerfile # Container for app
+├── docker-compose.yml # Local orchestration (API + Redis + DB + Worker)
+└── entrypoint.sh
+```
 
 ## Quickstart
+
+### Using Docker (Recommended)
 ```bash
-cd day32
+# Start all services
+docker-compose -f docker/docker-compose.yml up --build
+
+# Stop all services
+docker-compose -f docker/docker-compose.yml down
+```
+
+### Local Development
+```bash
+# Create virtual environment
 python -m venv .venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Initialize database
+python scripts/init_db.py
+
+# Seed database with sample data
+python scripts/seed_data.py
+
+# Run the application
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+## Testing
+```bash
+# Run unit tests
+python -m pytest app/tests/
+```
+
+## Environment Variables
+Copy `.env.example` to `.env` and update the values as needed.
+
+## Documentation
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture information.
