@@ -1,20 +1,23 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from app.core.config import settings
 
-app = FastAPI(title="Day 9 - Multi-Level Cache System")
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.PROJECT_VERSION,
+    description="Multi-Level Cache System"
+)
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day09"
+# Import routers
+from app.routes import health, items
 
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(health.router, prefix="/health", tags=["health"])
+app.include_router(items.router, prefix="/items", tags=["items"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 9 - Multi-Level Cache System"}
+    return {"message": f"Welcome to {settings.PROJECT_NAME}"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day09"}
+@app.on_event("startup")
+async def startup_event():
+    print(f"{settings.PROJECT_NAME} started successfully")
