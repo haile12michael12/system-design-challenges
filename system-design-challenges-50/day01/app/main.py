@@ -1,20 +1,24 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from app.core.config import settings
 
-app = FastAPI(title="Day 1 - Instagram Feed (Functional Requirements Focus)")
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.PROJECT_VERSION,
+    description="Instagram Feed Service"
+)
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day01"
+# Import routers
+from app.api import routes_health, routes_feed, routes_users
 
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(routes_health.router, prefix="/health", tags=["health"])
+app.include_router(routes_feed.router, prefix="/feed", tags=["feed"])
+app.include_router(routes_users.router, prefix="/users", tags=["users"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 1 - Instagram Feed (Functional Requirements Focus)"}
+    return {"message": f"Welcome to {settings.PROJECT_NAME}"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day01"}
+@app.on_event("startup")
+async def startup_event():
+    print(f"{settings.PROJECT_NAME} started successfully")
