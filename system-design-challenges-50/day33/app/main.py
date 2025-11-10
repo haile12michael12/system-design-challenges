@@ -1,15 +1,20 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from app.core.config import settings
 
-app = FastAPI(title="Day 33 - Geo-Distributed Key-Value Store")
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.PROJECT_VERSION,
+    description="Geo-Distributed Key-Value Store"
+)
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day33"
+# Import routers
+from app.api import health, kv, replication, admin
 
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(health.router, prefix="/health", tags=["health"])
+app.include_router(kv.router, prefix="/kv", tags=["kv"])
+app.include_router(replication.router, prefix="/replicate", tags=["replication"])
+app.include_router(admin.router, prefix="/admin", tags=["admin"])
 
 @app.get("/")
 async def root():
