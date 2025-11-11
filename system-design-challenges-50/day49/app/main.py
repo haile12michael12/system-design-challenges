@@ -1,20 +1,18 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 
 app = FastAPI(title="Day 49 - Cost-Aware Autoscaler")
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day49"
+# Import routers
+from app.api import health, dashboard
 
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(health.router, prefix="/health", tags=["health"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to Day 49 - Cost-Aware Autoscaler"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day49"}
+@app.on_event("startup")
+async def startup_event():
+    print("Day 49 - Cost-Aware Autoscaler started successfully")
