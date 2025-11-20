@@ -1,20 +1,30 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from .routes import payments
+from .config import settings
+from .prometheus_middleware import PrometheusMiddleware
 
-app = FastAPI(title="Day 13 - High-Durability Payment Gateway")
+def create_app():
+    app = FastAPI(
+        title=settings.PROJECT_NAME,
+        version=settings.VERSION,
+        debug=settings.DEBUG
+    )
+    
+    # Add Prometheus middleware
+    app.add_middleware(PrometheusMiddleware)
+    
+    # Include routers
+    app.include_router(payments.router, prefix=settings.API_V1_STR)
+    
+    @app.get("/")
+    async def root():
+        return {"message": "Payment Processing Service"}
+    
+    @app.get("/metrics")
+    async def metrics():
+        # This would integrate with Prometheus client
+        return {"message": "Metrics endpoint"}
+    
+    return app
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day13"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Day 13 - High-Durability Payment Gateway"}
-
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day13"}
+app = create_app()

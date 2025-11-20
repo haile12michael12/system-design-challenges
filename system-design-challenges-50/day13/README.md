@@ -1,32 +1,66 @@
-# Day 13 - High-Durability Payment Gateway
+# Day 13 - Payment Processing Service
 
 ## Challenge Description
-Build a small API that processes payments with guaranteed durability and transaction logs. Goal: Explore Latency vs Durability.
+Build a payment processing service with retry logic, idempotency, and monitoring.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
-
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+## Project Structure
+```
+day13/
+├── app/
+│ ├── __init__.py
+│ ├── main.py
+│ ├── config.py
+│ ├── prometheus_middleware.py
+│ ├── db/
+│ │ ├── __init__.py
+│ │ ├── database.py
+│ │ └── models.py
+│ ├── routes/
+│ │ ├── __init__.py
+│ │ └── payments.py
+│ ├── services/
+│ │ └── payment_processor.py
+│ ├── workers/
+│ │ └── worker.py
+│ └── utils/
+│ └── logger.py
+├── tests/
+│ ├── __init__.py
+│ └── test_integration.py
+├── .env.example
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+└── ARCHITECTURE.md
+```
 
 ## Quickstart
+
+### Prerequisites
+- Docker and Docker Compose
+- Python 3.11+ (for local development)
+
+### Running with Docker Compose
 ```bash
-cd day13
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+docker-compose up --build
+```
+
+### Running Locally
+```bash
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+## API Endpoints
+
+### Payments
+- `POST /api/v1/payments` - Process a payment
+- `GET /api/v1/payments/{payment_id}` - Get payment status
+
+## Testing
+```bash
+pytest tests/
+```
