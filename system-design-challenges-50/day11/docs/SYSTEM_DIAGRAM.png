@@ -1,0 +1,18 @@
+# System Diagram
+
+This is a placeholder for the system diagram. In a real implementation, this would be a visual diagram showing:
+
+1. Frontend (React/Vite) - User Interface
+2. Backend (FastAPI) - API Layer
+3. Database (PostgreSQL) - Data Storage
+4. Cache/Queue (Redis) - Messaging
+5. Worker (Celery) - Background Processing
+6. Load Balancer (Nginx) - Traffic Routing
+
+Components would be connected with arrows showing data flow:
+- User ↔ Frontend
+- Frontend ↔ Backend API
+- Backend ↔ Database
+- Backend ↔ Redis
+- Worker ↔ Redis
+- Worker ↔ Database

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaler-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoscaler-backend
+  template:
+    metadata:
+      labels:
+        app: autoscaler-backend
+    spec:
+      containers:
+      - name: backend
+        image: autoscaler-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:password@postgres-service:5432/autoscaler"
+        - name: REDIS_URL
+          value: "redis://redis-service:6379/0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoscaler-backend-service
+spec:
+  selector:
+    app: autoscaler-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP

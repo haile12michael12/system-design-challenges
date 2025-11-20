@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaler-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoscaler-frontend
+  template:
+    metadata:
+      labels:
+        app: autoscaler-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: autoscaler-frontend:latest
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoscaler-frontend-service
+spec:
+  selector:
+    app: autoscaler-frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer

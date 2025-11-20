@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaler-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoscaler-worker
+  template:
+    metadata:
+      labels:
+        app: autoscaler-worker
+    spec:
+      containers:
+      - name: worker
+        image: autoscaler-backend:latest
+        command: ["celery", "-A", "app.workers.celery_app", "worker", "--loglevel=info"]
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:password@postgres-service:5432/autoscaler"
+        - name: REDIS_URL
+          value: "redis://redis-service:6379/0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoscaler-worker-service
+spec:
+  selector:
+    app: autoscaler-worker
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
+  type: ClusterIP
