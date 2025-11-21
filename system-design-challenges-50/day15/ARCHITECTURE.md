@@ -1,36 +1,45 @@
-# Architecture Notes - Day 15 - Read vs Write Optimized Social App
+# Post Service Architecture
 
-## Components to Consider
-- API Gateway / Load Balancer
-- FastAPI service(s)
-- Postgres (or compatible) storage
-- Cache (Redis)
-- Worker queue (RabbitMQ / Redis Streams)
-- Monitoring and logging stack
+## Overview
+This document describes the architecture of the Post Service, a social media platform for creating and sharing posts.
 
-## Suggested Non-Functional Requirements
-- Target users / TPS:
-- Latency targets:
-- Availability SLA:
-- Data durability requirements:
-- Security considerations:
+## System Components
 
-## Failure Scenarios to Consider
-- DB partition
-- Cache failure
-- Worker backlog
-- Network latency
-- Service degradation
+### API Layer
+- **FastAPI Service**: Main application service handling HTTP requests
+- **Routes**: REST API endpoints for posts and health checks
+- **Schemas**: Data validation and serialization
 
-## Scalability Considerations
-- Horizontal vs vertical scaling
-- Database sharding strategy
-- Caching strategy
-- Load balancing approach
-- CDN requirements
+### Domain Layer
+- **Entities**: Core business entities (Post)
+- **Value Objects**: Immutable value objects (PostId)
+- **Events**: Domain events (PostCreated)
 
-## Technology Choices
-- Justify your choice of database (SQL vs NoSQL)
-- Explain caching strategy
-- Describe queueing mechanism
-- Outline monitoring approach
+### Application Layer
+- **Commands**: Write operations (CreatePost)
+- **Queries**: Read operations (GetPost, FeedQuery)
+- **Handlers**: Command and query handlers
+- **DTOs**: Data transfer objects
+
+### Infrastructure Layer
+- **Database**: PostgreSQL with SQLAlchemy ORM
+- **Cache**: Redis for caching
+- **Messaging**: Internal message broker for event handling
+- **Instrumentation**: Prometheus metrics and OpenTelemetry tracing
+
+### Workers
+- **Celery**: Background task processing
+- **Tasks**: Event handling tasks
+
+## Technology Stack
+- **Framework**: FastAPI
+- **Database**: PostgreSQL
+- **Cache**: Redis
+- **Messaging**: Internal message broker
+- **Workers**: Celery
+- **Monitoring**: Prometheus, OpenTelemetry
+- **Containerization**: Docker
+
+## Deployment
+- **Docker Compose**: Multi-container deployment
+- **Services**: App, Worker, Redis, PostgreSQL

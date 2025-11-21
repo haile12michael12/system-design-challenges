@@ -1,20 +1,19 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from .config import settings
 
-app = FastAPI(title="Day 15 - Read vs Write Optimized Social App")
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.VERSION,
+    debug=settings.DEBUG
+)
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day15"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 15 - Read vs Write Optimized Social App"}
+    return {"message": "Post Service API"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day15"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
