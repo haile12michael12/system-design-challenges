@@ -1,32 +1,112 @@
-# Day 16 - Strongly Consistent Auth System
+# Authentication Service
 
-## Challenge Description
-Auth microservice ensuring immediate consistency after password resets. Goal: Explore strong consistency design.
+## Overview
+A strongly consistent authentication microservice with immediate consistency after password resets. This service provides user registration, login, token management, and password reset functionality.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
+## Features
+- User registration and authentication
+- JWT-based token management
+- Password reset functionality
+- Email notifications
+- Rate limiting
+- Token blacklisting
+- Background task processing
+- Strong consistency guarantees
 
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+## Architecture
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture documentation.
 
-## Quickstart
+## Getting Started
+
+### Prerequisites
+- Python 3.9+
+- PostgreSQL
+- Redis
+- Node.js (for frontend)
+
+### Installation
+
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set up environment variables (copy `.env` from `.env.example` and modify as needed)
+
+### Running the Application
+
+#### Backend
 ```bash
-cd day16
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+#### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+#### With Docker Compose
+```bash
+cd infrastructure/docker
+docker-compose up --build
+```
+
+## Project Structure
+
+```
+app/              # Backend (FastAPI)
+  core/           # Core configuration and security
+  db/             # Database models and sessions
+  routes/         # API routes
+  schemas/        # Pydantic schemas
+  services/       # Business logic services
+  utils/          # Utility functions
+  workers/        # Background workers
+
+frontend/         # Frontend (React/Vite)
+infrastructure/   # Docker and Nginx configuration
+scripts/          # Utility scripts
+tests/            # Test suite
+config/           # Configuration files
+resources/        # Templates and resources
+```
+
+## API Documentation
+Once the application is running, visit:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## Testing
+
+Run unit tests:
+```bash
+pytest tests/unit
+```
+
+Run integration tests:
+```bash
+pytest tests/integration
+```
+
+## Deployment
+
+### Docker
+Build and run with Docker:
+```bash
+docker build -t auth-service .
+docker run -p 8000:8000 auth-service
+```
+
+### Docker Compose
+Deploy with Docker Compose:
+```bash
+cd infrastructure/docker
+docker-compose up -d
+```

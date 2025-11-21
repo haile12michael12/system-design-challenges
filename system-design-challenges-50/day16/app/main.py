@@ -1,20 +1,12 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from .routes import auth, health
 
-app = FastAPI(title="Day 16 - Strongly Consistent Auth System")
+app = FastAPI(title="Authentication Service")
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day16"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(health.router, prefix="/api/v1", tags=["health"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 16 - Strongly Consistent Auth System"}
-
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day16"}
+    return {"message": "Authentication Service"}
