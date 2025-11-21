@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: ops/docker/Dockerfile.app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/ecommerce
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - ecommerce-network
+
+  worker:
+    build:
+      context: ../../
+      dockerfile: ops/docker/Dockerfile.worker
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/ecommerce
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - ecommerce-network
+
+  migrations:
+    build:
+      context: ../../
+      dockerfile: ops/docker/Dockerfile.migrations
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/ecommerce
+    depends_on:
+      - db
+    networks:
+      - ecommerce-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ecommerce-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres_data:
+
+networks:
+  ecommerce-network:
+    driver: bridge

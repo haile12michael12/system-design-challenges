@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-config
+data:
+  DATABASE_URL: "postgresql://postgres:password@postgres-service:5432/ecommerce"
+  REDIS_URL: "redis://redis-service:6379/0"
+  DEBUG: "True"

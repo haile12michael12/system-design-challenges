@@ -1,32 +1,111 @@
-# Day 14 - Microservices vs Monolith Splitter
+# E-Commerce Platform - Day 14
 
-## Challenge Description
-Convert a monolithic e-commerce app into microservices. Goal: Analyze engineering cost vs independence.
+A comprehensive e-commerce platform built with FastAPI, featuring catalog management, order processing, user authentication, and payment handling.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
+## Features
 
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+- Product catalog management
+- User authentication and authorization
+- Order processing system
+- Payment integration
+- Background task processing
+- Caching with Redis
+- Event-driven architecture
+- Containerized with Docker
+- Kubernetes deployment ready
+- CI/CD pipelines
 
-## Quickstart
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture documentation.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- Docker (optional, for containerization)
+- PostgreSQL (or use Docker Compose)
+- Redis (or use Docker Compose)
+
+### Installation
+
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set up environment variables (copy `.env.example` to `.env` and modify as needed)
+
+### Running the Application
+
+#### Local Development
+
 ```bash
-cd day14
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+#### With Docker Compose
+
+```bash
+docker-compose -f ops/compose/docker-compose.dev.yml up --build
+```
+
+## Project Structure
+
+```
+app/              # Main application code
+  api/            # API routes and dependencies
+  core/           # Core configuration, security, and logging
+  services/       # Business logic services
+  db/             # Database models and connections
+  workers/        # Background task workers
+  cache/          # Caching implementation
+  events/         # Event producers and consumers
+  utils/          # Utility functions
+
+tests/            # Test suite
+ops/              # Operations files (Docker, Kubernetes, CI/CD)
+scripts/          # Helper scripts
+monitoring/       # Monitoring configurations
+```
+
+## API Documentation
+
+Once the application is running, visit:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## Testing
+
+Run unit tests:
+```bash
+pytest tests/unit
+```
+
+Run integration tests:
+```bash
+pytest tests/integration
+```
+
+## Deployment
+
+### Docker
+
+Build and run with Docker:
+```bash
+docker build -t ecommerce-app .
+docker run -p 8000:8000 ecommerce-app
+```
+
+### Kubernetes
+
+Deploy to Kubernetes:
+```bash
+kubectl apply -f ops/k8s/
+```

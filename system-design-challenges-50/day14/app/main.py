@@ -1,20 +1,24 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from .api.routes import catalog, orders, users, payments
+from .core.config import settings
 
-app = FastAPI(title="Day 14 - Microservices vs Monolith Splitter")
+def create_app():
+    app = FastAPI(
+        title=settings.PROJECT_NAME,
+        version=settings.VERSION,
+        debug=settings.DEBUG
+    )
+    
+    # Include routers
+    app.include_router(catalog.router, prefix="/api/v1/catalog")
+    app.include_router(orders.router, prefix="/api/v1/orders")
+    app.include_router(users.router, prefix="/api/v1/users")
+    app.include_router(payments.router, prefix="/api/v1/payments")
+    
+    @app.get("/")
+    async def root():
+        return {"message": "E-commerce Platform API"}
+    
+    return app
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day14"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Day 14 - Microservices vs Monolith Splitter"}
-
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day14"}
+app = create_app()

@@ -1,0 +1,40 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE_APP: ecommerce-app
+  DOCKER_IMAGE_WORKER: ecommerce-worker
+  DOCKER_IMAGE_MIGRATIONS: ecommerce-migrations
+
+test:
+  stage: test
+  image: python:3.11
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -f ops/docker/Dockerfile.app -t $DOCKER_IMAGE_APP .
+    - docker build -f ops/docker/Dockerfile.worker -t $DOCKER_IMAGE_WORKER .
+    - docker build -f ops/docker/Dockerfile.migrations -t $DOCKER_IMAGE_MIGRATIONS .
+    - docker push $DOCKER_IMAGE_APP
+    - docker push $DOCKER_IMAGE_WORKER
+    - docker push $DOCKER_IMAGE_MIGRATIONS
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying to production..."
+    # Add deployment commands here
+  only:
+    - main
