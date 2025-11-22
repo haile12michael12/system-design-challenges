@@ -8,32 +8,27 @@ from .config import settings
 def setup_logging(log_level: Optional[str] = None) -> None:
     """Set up logging configuration."""
     if log_level is None:
-        log_level = "INFO"
+        log_level = "DEBUG" if settings.DEBUG else "INFO"
     
-    # Create formatter
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    
-    # Create console handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(formatter)
+    # Convert string log level to logging constant
+    numeric_level = getattr(logging, log_level.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f'Invalid log level: {log_level}')
     
     # Configure root logger
-    root_logger = logging.getLogger()
-    root_logger.setLevel(log_level)
-    root_logger.addHandler(console_handler)
+    logging.basicConfig(
+        level=numeric_level,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+        ]
+    )
     
-    # Configure application logger
-    app_logger = logging.getLogger("feed_service")
-    app_logger.setLevel(log_level)
-    app_logger.addHandler(console_handler)
-    
-    # If in development, set higher log level for third-party libraries
-    if settings.ENVIRONMENT == "development":
-        logging.getLogger("sqlalchemy").setLevel(logging.WARNING)
-        logging.getLogger("uvicorn").setLevel(logging.WARNING)
+    # Set specific log levels for third-party libraries
+    logging.getLogger("uvicorn").setLevel(logging.WARNING)
+    logging.getLogger("uvicorn.error").setLevel(logging.WARNING)
+    logging.getLogger("fastapi").setLevel(logging.WARNING)
 
 
-# Default logger for the application
+# Create a logger instance that can be imported and used throughout the application
 logger = logging.getLogger("feed_service")

@@ -1,58 +1,47 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 from typing import List
 
-from ..schemas.feed_schema import FeedResponse
 from ..domain.services.feed_reader import FeedReaderService
-from ..db.repositories.post_repo import PostRepository
-from ..cache.feed_cache import FeedCache
+from ..schemas.feed_schema import FeedResponse
+from ..schemas.post_schema import PostResponse
+from ..utils.pagination import PaginationParams
 
 router = APIRouter(prefix="/feed", tags=["feed"])
 
 
-@router.get("/", response_model=List[FeedResponse])
+@router.get("/", response_model=FeedResponse)
 async def get_feed(
-    user_id: int,
-    limit: int = Query(20, le=100),
-    offset: int = Query(0)
-):
-    """Get user's feed."""
-    # In a real implementation, we would:
-    # 1. Validate the user
-    # 2. Check cache first
-    # 3. If not in cache, fetch from database
-    # 4. Return the feed
+    pagination: PaginationParams = Depends(),
+    feed_reader: FeedReaderService = Depends(FeedReaderService)
+) -> FeedResponse:
+    """
+    Get user's feed with pagination.
     
-    # Mock implementation for now
-    return [
-        FeedResponse(
-            id=1,
-            user_id=user_id,
-            content="Sample post content",
-            author="Sample Author",
-            created_at="2023-01-01T00:00:00Z"
-        )
-    ]
+    Args:
+        pagination: Pagination parameters
+        feed_reader: Feed reader service instance
+        
+    Returns:
+        FeedResponse: User's feed data
+    """
+    posts = await feed_reader.get_feed(pagination.page, pagination.size)
+    return FeedResponse(posts=posts, page=pagination.page, size=pagination.size)
 
 
-@router.get("/timeline", response_model=List[FeedResponse])
-async def get_user_timeline(
-    user_id: int,
-    limit: int = Query(20, le=100),
-    offset: int = Query(0)
-):
-    """Get user's timeline (their own posts)."""
-    # In a real implementation, we would:
-    # 1. Validate the user
-    # 2. Fetch user's posts from database
-    # 3. Return the timeline
+@router.get("/posts/{post_id}", response_model=PostResponse)
+async def get_post(
+    post_id: str,
+    feed_reader: FeedReaderService = Depends(FeedReaderService)
+) -> PostResponse:
+    """
+    Get a specific post by ID.
     
-    # Mock implementation for now
-    return [
-        FeedResponse(
-            id=1,
-            user_id=user_id,
-            content="My post content",
-            author="Current User",
-            created_at="2023-01-01T00:00:00Z"
-        )
-    ]
+    Args:
+        post_id: Post ID
+        feed_reader: Feed reader service instance
+        
+    Returns:
+        PostResponse: Post data
+    """
+    post = await feed_reader.get_post(post_id)
+    return PostResponse(**post)

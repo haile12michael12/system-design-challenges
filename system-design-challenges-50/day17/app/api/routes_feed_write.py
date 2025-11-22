@@ -1,40 +1,46 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List
+from typing import Any
 
-from ..schemas.post_schema import PostCreate, PostResponse
 from ..domain.services.feed_writer import FeedWriterService
-from ..db.repositories.post_repo import PostRepository
-from ..cache.post_cache import PostCache
-from ..message_bus.event_publisher import EventPublisher
+from ..schemas.post_schema import PostCreate, PostResponse
+from ..core.security import decode_access_token
+from ..core.exceptions import UnauthorizedException
 
 router = APIRouter(prefix="/posts", tags=["posts"])
 
 
+def get_current_user(token: str) -> dict:
+    """Get current user from JWT token."""
+    payload = decode_access_token(token)
+    if not payload:
+        raise UnauthorizedException("Invalid token")
+    return payload
+
+
 @router.post("/", response_model=PostResponse)
-async def create_post(post: PostCreate):
-    """Create a new post."""
-    # In a real implementation, we would:
-    # 1. Validate the user
-    # 2. Save the post to the database
-    # 3. Publish a PostCreated event
-    # 4. Return the created post
+async def create_post(
+    post: PostCreate,
+    current_user: dict = Depends(get_current_user),
+    feed_writer: FeedWriterService = Depends(FeedWriterService)
+) -> PostResponse:
+    """
+    Create a new post.
     
-    # Mock implementation for now
-    return PostResponse(
-        id=1,
-        user_id=post.user_id,
-        content=post.content,
-        created_at="2023-01-01T00:00:00Z"
-    )
-
-
-@router.delete("/{post_id}")
-async def delete_post(post_id: int):
-    """Delete a post."""
-    # In a real implementation, we would:
-    # 1. Validate the user owns the post
-    # 2. Delete the post from the database
-    # 3. Publish a PostDeleted event
-    # 4. Invalidate caches
-    
-    return {"message": f"Post {post_id} deleted"}
+    Args:
+        post: Post creation data
+        current_user: Current authenticated user
+        feed_writer: Feed writer service instance
+        
+    Returns:
+        PostResponse: Created post data
+    """
+    try:
+        # Add user ID to post data
+        post_data = post.dict()
+        post_data["user_id"] = current_user["user_id"]
+        
+        # Create post through service
+        created_post = await feed_writer.create_post(post_data)
+        return PostResponse(**created_post)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -2,8 +2,23 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from jose import JWTError, jwt
+from passlib.context import CryptContext
 
 from .config import settings
+
+
+# Password hashing context
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a plain password against a hashed password."""
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password: str) -> str:
+    """Hash a password."""
+    return pwd_context.hash(password)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
@@ -20,8 +35,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return encoded_jwt
 
 
-def verify_access_token(token: str) -> Optional[dict]:
-    """Verify a JWT access token and return the payload."""
+def decode_access_token(token: str) -> Optional[dict]:
+    """Decode a JWT access token."""
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload

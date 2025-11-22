@@ -1,37 +1,62 @@
 from fastapi import APIRouter, Depends
 from typing import Dict, Any
 
+from ..core.monitoring import REQUEST_COUNT, REQUEST_DURATION
+
 router = APIRouter(prefix="/debug", tags=["debug"])
 
 
 @router.get("/health")
-async def health_check() -> Dict[str, Any]:
-    """Health check endpoint."""
+async def health_check() -> Dict[str, str]:
+    """
+    Health check endpoint.
+    
+    Returns:
+        Dict[str, str]: Health status
+    """
+    return {"status": "healthy", "service": "feed-service"}
+
+
+@router.get("/metrics-summary")
+async def metrics_summary() -> Dict[str, Any]:
+    """
+    Get a summary of Prometheus metrics.
+    
+    Returns:
+        Dict[str, Any]: Metrics summary
+    """
+    # Get metrics data
+    request_count_metrics = {}
+    for sample in REQUEST_COUNT.collect()[0].samples:
+        labels = sample.labels
+        key = f"{labels['method']}_{labels['endpoint']}_{labels['status']}"
+        request_count_metrics[key] = sample.value
+    
+    duration_metrics = {}
+    for sample in REQUEST_DURATION.collect()[0].samples:
+        labels = sample.labels
+        key = f"{labels['method']}_{labels['endpoint']}"
+        duration_metrics[key] = sample.value
+    
     return {
-        "status": "healthy",
-        "service": "eventually-consistent-social-feed",
-        "version": "1.0.0"
+        "request_counts": request_count_metrics,
+        "request_durations": duration_metrics
     }
 
 
-@router.get("/metrics")
-async def metrics() -> Dict[str, Any]:
-    """Metrics endpoint (simplified)."""
-    # In a real implementation, this would integrate with Prometheus
+@router.get("/config")
+async def get_config() -> Dict[str, Any]:
+    """
+    Get current configuration.
+    
+    Returns:
+        Dict[str, Any]: Current configuration
+    """
+    from ..core.config import settings
+    
     return {
-        "requests_processed": 100,
-        "active_connections": 5,
-        "cache_hits": 80,
-        "cache_misses": 20
-    }
-
-
-@router.get("/info")
-async def service_info() -> Dict[str, Any]:
-    """Service information endpoint."""
-    return {
-        "name": "Eventually Consistent Social Feed",
-        "description": "A social feed service with eventual consistency",
-        "architecture": "Event-driven, microservices",
-        "consistency_model": "Eventually consistent"
+        "database_url": settings.DATABASE_URL,
+        "redis_url": settings.REDIS_URL,
+        "debug": settings.DEBUG,
+        "environment": settings.ENVIRONMENT
     }

@@ -1,8 +1,9 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
+import uuid
 
-from ..models import Follower, User
+from ..models import Follow, User
+from ...domain.entities.user_entity import UserEntity
 
 
 class FollowerRepository:
@@ -11,48 +12,79 @@ class FollowerRepository:
     def __init__(self, db: Session):
         self.db = db
     
-    def follow_user(self, follower_id: int, followee_id: int) -> Follower:
-        """Create a follow relationship."""
-        follower = Follower(
-            follower_id=follower_id,
-            followee_id=followee_id
-        )
-        self.db.add(follower)
-        self.db.commit()
-        self.db.refresh(follower)
-        return follower
-    
-    def unfollow_user(self, follower_id: int, followee_id: int) -> bool:
-        """Remove a follow relationship."""
-        follower = (
-            self.db.query(Follower)
-            .filter(
-                Follower.follower_id == follower_id,
-                Follower.followee_id == followee_id
-            )
-            .first()
-        )
+    def get_followers(self, user_id: str) -> List[UserEntity]:
+        """
+        Get followers of a user.
         
-        if follower:
-            self.db.delete(follower)
-            self.db.commit()
-            return True
-        return False
-    
-    def get_followers(self, user_id: int) -> List[User]:
-        """Get followers of a user."""
-        return (
+        Args:
+            user_id: User ID
+            
+        Returns:
+            List[UserEntity]: List of followers
+        """
+        db_followers = (
             self.db.query(User)
-            .join(Follower, Follower.follower_id == User.id)
-            .filter(Follower.followee_id == user_id)
+            .join(Follow, Follow.follower_id == User.id)
+            .filter(Follow.followed_id == uuid.UUID(user_id))
             .all()
         )
+        return [UserEntity.from_orm(user) for user in db_followers]
     
-    def get_following(self, user_id: int) -> List[User]:
-        """Get users that a user is following."""
-        return (
+    def get_following(self, user_id: str) -> List[UserEntity]:
+        """
+        Get users that a user is following.
+        
+        Args:
+            user_id: User ID
+            
+        Returns:
+            List[UserEntity]: List of users being followed
+        """
+        db_following = (
             self.db.query(User)
-            .join(Follower, Follower.followee_id == User.id)
-            .filter(Follower.follower_id == user_id)
+            .join(Follow, Follow.followed_id == User.id)
+            .filter(Follow.follower_id == uuid.UUID(user_id))
             .all()
         )
+        return [UserEntity.from_orm(user) for user in db_following]
+    
+    def is_following(self, follower_id: str, followed_id: str) -> bool:
+        """
+        Check if a user is following another user.
+        
+        Args:
+            follower_id: ID of the user who might be following
+            followed_id: ID of the user who might be followed
+            
+        Returns:
+            bool: True if following, False otherwise
+        """
+        follow = self.db.query(Follow).filter(
+            Follow.follower_id == uuid.UUID(follower_id),
+            Follow.followed_id == uuid.UUID(followed_id)
+        ).first()
+        return follow is not None
+    
+    def get_follower_count(self, user_id: str) -> int:
+        """
+        Get the number of followers for a user.
+        
+        Args:
+            user_id: User ID
+            
+        Returns:
+            int: Number of followers
+        """
+        return self.db.query(Follow).filter(Follow.followed_id == uuid.UUID(user_id)).count()
+    
+    def get_following_count(self, user_id: str) -> int:
+        """
+        Get the number of users a user is following.
+        
+        Args:
+            user_id: User ID
+            
+        Returns:
+            int: Number of users being followed
+        """
+        return self.db.query(Follow).filter(Follow.follower_id == uuid.UUID(user_id)).count()
