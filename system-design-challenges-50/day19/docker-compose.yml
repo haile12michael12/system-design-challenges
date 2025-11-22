@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # API Service
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./sql_app.db
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_PATH=/app/data/primary
+      - REPLICA1_PATH=/app/data/replica1
+      - REPLICA2_PATH=/app/data/replica2
+      - WAL_PATH=/app/wal
+      - DEBUG=True
+    volumes:
+      - ./data:/app/data
+      - ./wal:/app/wal
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  # Redis for Celery and caching
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # Celery Worker for async replication
+  worker:
+    build: .
+    command: celery -A app.workers.replicator_worker worker --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_PATH=/app/data/primary
+      - REPLICA1_PATH=/app/data/replica1
+      - REPLICA2_PATH=/app/data/replica2
+      - WAL_PATH=/app/wal
+    volumes:
+      - ./data:/app/data
+      - ./wal:/app/wal
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  # Celery Beat for periodic tasks
+  beat:
+    build: .
+    command: celery -A app.workers.replicator_worker beat --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: unless-stopped

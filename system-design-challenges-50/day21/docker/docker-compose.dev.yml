@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: social_media_dev
+      POSTGRES_USER: social_user
+      POSTGRES_PASSWORD: social_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - social_network
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - social_network
+
+  app:
+    build: 
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://social_user:social_pass@db:5432/social_media_dev
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=dev_secret_key
+    volumes:
+      - ../app:/app/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - social_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://social_user:social_pass@db:5432/social_media_dev
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - social_network
+    command: celery -A app.workers.celery_app worker --loglevel=info
+
+volumes:
+  postgres_data:
+
+networks:
+  social_network:
+    driver: bridge

@@ -1,0 +1,131 @@
+from sqlalchemy.orm import Session
+from typing import List, Optional
+from app.db.models import Recommendation, RecommendationStatus, Service, Simulation, ConfigChange
+
+
+class RecommendationRepository:
+    """Repository for Recommendation model"""
+    
+    def __init__(self, db: Session):
+        self.db = db
+    
+    def create(self, recommendation: Recommendation) -> Recommendation:
+        """Create a new recommendation"""
+        self.db.add(recommendation)
+        self.db.commit()
+        self.db.refresh(recommendation)
+        return recommendation
+    
+    def get(self, recommendation_id: str) -> Optional[Recommendation]:
+        """Get a recommendation by ID"""
+        return self.db.query(Recommendation).filter(Recommendation.id == recommendation_id).first()
+    
+    def get_by_service(self, service_id: str, limit: int = 100) -> List[Recommendation]:
+        """Get recommendations by service ID"""
+        return self.db.query(Recommendation).filter(Recommendation.service_id == service_id).limit(limit).all()
+    
+    def get_by_status(self, status: RecommendationStatus, limit: int = 100) -> List[Recommendation]:
+        """Get recommendations by status"""
+        return self.db.query(Recommendation).filter(Recommendation.status == status).limit(limit).all()
+    
+    def update_status(self, recommendation_id: str, status: RecommendationStatus) -> Optional[Recommendation]:
+        """Update recommendation status"""
+        recommendation = self.get(recommendation_id)
+        if recommendation:
+            recommendation.status = status
+            self.db.commit()
+            self.db.refresh(recommendation)
+        return recommendation
+    
+    def get_historical(self, service_id: str, limit: int = 10) -> List[Recommendation]:
+        """Get historical recommendations for a service"""
+        return self.db.query(Recommendation).filter(
+            Recommendation.service_id == service_id
+        ).order_by(Recommendation.created_at.desc()).limit(limit).all()
+
+
+class ServiceRepository:
+    """Repository for Service model"""
+    
+    def __init__(self, db: Session):
+        self.db = db
+    
+    def create(self, service: Service) -> Service:
+        """Create a new service"""
+        self.db.add(service)
+        self.db.commit()
+        self.db.refresh(service)
+        return service
+    
+    def get(self, service_id: str) -> Optional[Service]:
+        """Get a service by ID"""
+        return self.db.query(Service).filter(Service.id == service_id).first()
+    
+    def get_by_name(self, name: str) -> Optional[Service]:
+        """Get a service by name"""
+        return self.db.query(Service).filter(Service.name == name).first()
+    
+    def list_all(self) -> List[Service]:
+        """List all services"""
+        return self.db.query(Service).all()
+
+
+class SimulationRepository:
+    """Repository for Simulation model"""
+    
+    def __init__(self, db: Session):
+        self.db = db
+    
+    def create(self, simulation: Simulation) -> Simulation:
+        """Create a new simulation"""
+        self.db.add(simulation)
+        self.db.commit()
+        self.db.refresh(simulation)
+        return simulation
+    
+    def get(self, simulation_id: str) -> Optional[Simulation]:
+        """Get a simulation by ID"""
+        return self.db.query(Simulation).filter(Simulation.id == simulation_id).first()
+    
+    def get_by_service(self, service_id: str, limit: int = 100) -> List[Simulation]:
+        """Get simulations by service ID"""
+        return self.db.query(Simulation).filter(Simulation.service_id == service_id).limit(limit).all()
+
+
+class ConfigChangeRepository:
+    """Repository for ConfigChange model"""
+    
+    def __init__(self, db: Session):
+        self.db = db
+    
+    def create(self, config_change: ConfigChange) -> ConfigChange:
+        """Create a new config change"""
+        self.db.add(config_change)
+        self.db.commit()
+        self.db.refresh(config_change)
+        return config_change
+    
+    def get(self, config_change_id: str) -> Optional[ConfigChange]:
+        """Get a config change by ID"""
+        return self.db.query(ConfigChange).filter(ConfigChange.id == config_change_id).first()
+    
+    def get_by_service(self, service_id: str, limit: int = 100) -> List[ConfigChange]:
+        """Get config changes by service ID"""
+        return self.db.query(ConfigChange).filter(ConfigChange.service_id == service_id).limit(limit).all()
+    
+    def get_history(self, service_id: str, limit: int = 10) -> List[ConfigChange]:
+        """Get config change history for a service"""
+        return self.db.query(ConfigChange).filter(
+            ConfigChange.service_id == service_id
+        ).order_by(ConfigChange.applied_at.desc()).limit(limit).all()
+    
+    def mark_rolled_back(self, config_change_id: str) -> Optional[ConfigChange]:
+        """Mark a config change as rolled back"""
+        from datetime import datetime
+        config_change = self.get(config_change_id)
+        if config_change:
+            config_change.rolled_back = True
+            config_change.rolled_back_at = datetime.utcnow()
+            self.db.commit()
+            self.db.refresh(config_change)
+        return config_change
