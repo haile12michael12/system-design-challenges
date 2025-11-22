@@ -1,20 +1,37 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-app = FastAPI(title="Day 18 - Latency-Aware News App")
+from .core.logging import setup_logging
+from .api.v1 import health, articles
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day18"
+# Set up logging
+setup_logging()
 
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Create FastAPI app
+app = FastAPI(
+    title="Day 18 - Latency-Aware News App",
+    description="A latency-aware news application with caching and prefetching capabilities",
+    version="1.0.0"
+)
 
+# Include routers
+app.include_router(health.router)
+app.include_router(articles.router, prefix="/v1")
+
+# Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 18 - Latency-Aware News App"}
+    return {
+        "message": "Welcome to Day 18 - Latency-Aware News App",
+        "docs": "/docs",
+        "health": "/v1/health/"
+    }
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day18"}
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "service": "news-service",
+        "version": "1.0.0"
+    }
