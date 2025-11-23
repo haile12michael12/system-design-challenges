@@ -1,20 +1,15 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from app.api.orders import router as orders_router
 
-app = FastAPI(title="Day 23 - Event-Driven Order Processing System")
+app = FastAPI(title="Order Processing System", version="0.1.0")
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day23"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(orders_router, prefix="/orders", tags=["orders"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 23 - Event-Driven Order Processing System"}
+    return {"message": "Order Processing System"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day23"}
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}

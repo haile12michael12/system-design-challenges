@@ -1,32 +1,53 @@
-# Day 24 - Multi-Region Failover Simulation
+# Failover Dashboard
 
-## Challenge Description
-Build a dashboard to test failover scenarios and latency effects. Goal: Handle region outages and replication lag.
+A real-time dashboard for monitoring and managing database replication failover across multiple regions.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
+## Features
 
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+- Real-time monitoring of database replica status across regions
+- Visualization of replication lag metrics
+- Simulate replication lag and outages for testing
+- Automated failover orchestration
+- WebSocket-based real-time updates
+- Historical data tracking and visualization
 
-## Quickstart
+## Architecture
+
+![Architecture Diagram](docs/architecture.png)
+
+## Getting Started
+
+1. Clone the repository
+2. Set up environment variables in `.env`
+3. Start services: `docker-compose up`
+
+## Services
+
+- **API Service**: FastAPI backend with REST and WebSocket endpoints
+- **Frontend**: Next.js 14 dashboard with real-time updates
+- **Database**: PostgreSQL for persistent storage
+- **Cache**: Redis for state management and messaging
+- **Workers**: Celery workers for background tasks
+
+## API Endpoints
+
+- `GET /health` - Health check
+- `POST /simulate/lag` - Simulate replication lag
+- `POST /simulate/outage` - Simulate region outage
+- `WebSocket /ws/regions` - Real-time region status updates
+
+## Development
+
+### Backend
 ```bash
-cd day24
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+cd api
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
