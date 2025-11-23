@@ -1,0 +1,284 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Feed Engine Dashboard",
+    "tags": ["feed-engine"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "5s",
+    "rows": [
+      {
+        "title": "Overview",
+        "panels": [
+          {
+            "title": "API Requests per Second",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "rate(http_requests_total[1m])",
+                "legendFormat": "{{method}} {{endpoint}}"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "reqps",
+                "label": "Requests/sec"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          },
+          {
+            "title": "API Response Time",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))",
+                "legendFormat": "95th percentile"
+              },
+              {
+                "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))",
+                "legendFormat": "50th percentile"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "s",
+                "label": "Response Time"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Database",
+        "panels": [
+          {
+            "title": "Database Connections",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "db_connections",
+                "legendFormat": "Active Connections"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "Connections"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          },
+          {
+            "title": "Database Query Latency",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(db_query_duration_seconds_bucket[1m])) by (le))",
+                "legendFormat": "95th percentile"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "s",
+                "label": "Query Time"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cache",
+        "panels": [
+          {
+            "title": "Cache Hit Rate",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "cache_hit_rate",
+                "legendFormat": "Hit Rate"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "percentunit",
+                "label": "Hit Rate"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          },
+          {
+            "title": "Cache Operations",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "rate(cache_operations_total{operation=\"get\"}[1m])",
+                "legendFormat": "GET"
+              },
+              {
+                "expr": "rate(cache_operations_total{operation=\"set\"}[1m])",
+                "legendFormat": "SET"
+              },
+              {
+                "expr": "rate(cache_operations_total{operation=\"delete\"}[1m])",
+                "legendFormat": "DELETE"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "ops",
+                "label": "Operations/sec"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Message Queue",
+        "panels": [
+          {
+            "title": "Kafka Consumer Lag",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "kafka_consumer_lag",
+                "legendFormat": "{{consumer_group}} {{topic}}"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "Messages"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          },
+          {
+            "title": "Kafka Producer Throughput",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "rate(kafka_produced_messages_total[1m])",
+                "legendFormat": "{{topic}}"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "ops",
+                "label": "Messages/sec"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Workers",
+        "panels": [
+          {
+            "title": "Celery Worker Tasks",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "rate(celery_tasks_processed_total[1m])",
+                "legendFormat": "Processed"
+              },
+              {
+                "expr": "rate(celery_tasks_failed_total[1m])",
+                "legendFormat": "Failed"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "ops",
+                "label": "Tasks/sec"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          },
+          {
+            "title": "Celery Worker Queue Length",
+            "type": "graph",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "celery_queue_length",
+                "legendFormat": "{{queue}}"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "Tasks"
+              },
+              {
+                "format": "short"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

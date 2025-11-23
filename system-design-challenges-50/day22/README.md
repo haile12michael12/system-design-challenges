@@ -1,32 +1,44 @@
-# Day 22 - Real-Time Analytics Pipeline
+# Feed Engine with Delayed Consistency
 
-## Challenge Description
-Design a system to collect, queue, and display live metrics (like Twitch or YouTube Analytics). Goal: Integrate queues + scaling.
+A scalable feed engine implementation that demonstrates delayed consistency patterns for high-throughput social media feeds.
 
-## Learning Goals
-- Understand the core design trade-offs for this challenge
-- Build a minimal prototype using FastAPI and Postgres-compatible patterns
-- Add monitoring and failure scenarios where applicable
+## Features
 
-## Acceptance Criteria
-- A runnable FastAPI starter in `app/main.py` that exposes a health endpoint
-- `README.md` contains design prompts and next steps
-- `ARCHITECTURE.md` with bullet points on components to design
-- Dockerfile for containerization
-- requirements.txt with dependencies
+- Real-time feed generation with eventual consistency
+- Kafka-based event streaming
+- Redis caching for performance
+- PostgreSQL for persistent storage
+- Celery workers for background processing
+- WebSocket support for live updates
+- Cost optimization strategies
+- Comprehensive monitoring and observability
 
-## Quickstart
-```bash
-cd day22
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
+## Architecture
 
-## Next Steps
-- Expand the DB models in `app/db/models.py`
-- Add caching with Redis where applicable
-- Add a background worker using Celery or RQ
-- Implement proper error handling and validation
-- Add unit and integration tests
+![Architecture Diagram](docs/architecture.png)
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Set up environment variables in `.env`
+4. Run database migrations: `alembic upgrade head`
+5. Start services: `docker-compose up`
+
+## API Documentation
+
+API documentation is available at `/docs` when the service is running.
+
+## Testing
+
+Run tests with:
+- Unit tests: `pytest tests/unit`
+- Integration tests: `pytest tests/integration`
+- Performance tests: `locust -f tests/performance/locustfile.py`
+
+## Monitoring
+
+The system includes:
+- Prometheus metrics endpoint at `/metrics`
+- Grafana dashboards
+- OpenTelemetry tracing

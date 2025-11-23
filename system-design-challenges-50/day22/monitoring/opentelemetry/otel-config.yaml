@@ -1,0 +1,63 @@
+# OpenTelemetry Collector Configuration
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'feed-engine'
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['api:8000', 'worker:8000']
+
+  jaeger:
+    protocols:
+      grpc:
+      thrift_http:
+
+  zipkin:
+
+processors:
+  batch:
+  memory_limiter:
+    limit_mib: 500
+    spike_limit_mib: 100
+    check_interval: 5s
+
+  attributes:
+    actions:
+      - key: environment
+        value: production
+        action: insert
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: feed_engine
+
+  jaeger:
+    endpoint: jaeger-all-in-one:14250
+    tls:
+      insecure: true
+
+  zipkin:
+    endpoint: "http://zipkin-all-in-one:9411/api/v2/spans"
+
+  logging:
+    loglevel: debug
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp, jaeger, zipkin]
+      processors: [memory_limiter, batch, attributes]
+      exporters: [jaeger, zipkin, logging]
+
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [memory_limiter, batch, attributes]
+      exporters: [prometheus, logging]

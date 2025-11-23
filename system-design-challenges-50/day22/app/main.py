@@ -1,20 +1,19 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from app.routes import auth, feed, posts, health, admin
 
-app = FastAPI(title="Day 22 - Real-Time Analytics Pipeline")
+app = FastAPI(title="Feed Engine", version="0.1.0")
 
-class HealthResp(BaseModel):
-    status: str = "ok"
-    service: str = "day22"
-
-@app.get("/health", response_model=HealthResp)
-async def health():
-    return HealthResp()
+# Include routers
+app.include_router(health.router, prefix="/health", tags=["health"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(posts.router, prefix="/posts", tags=["posts"])
+app.include_router(feed.router, prefix="/feed", tags=["feed"])
+app.include_router(admin.router, prefix="/admin", tags=["admin"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Day 22 - Real-Time Analytics Pipeline"}
+    return {"message": "Feed Engine API"}
 
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello from day22"}
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

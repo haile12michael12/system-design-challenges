@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed-worker
+  labels:
+    app: feed-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: feed-worker
+  template:
+    metadata:
+      labels:
+        app: feed-worker
+    spec:
+      containers:
+      - name: worker
+        image: feed-engine:latest
+        command: ["celery", "-A", "app.workers.celery_app", "worker", "--loglevel=info"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: feed-secrets
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: feed-secrets
+              key: redis-url
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka:9092"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed-beat
+  labels:
+    app: feed-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feed-beat
+  template:
+    metadata:
+      labels:
+        app: feed-beat
+    spec:
+      containers:
+      - name: beat
+        image: feed-engine:latest
+        command: ["celery", "-A", "app.workers.celery_app", "beat", "--schedule-file=/tmp/celerybeat-schedule", "--loglevel=info"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: feed-secrets
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: feed-secrets
+              key: redis-url
+        volumeMounts:
+        - name: celerybeat-volume
+          mountPath: /tmp
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+      volumes:
+      - name: celerybeat-volume
+        emptyDir: {}
